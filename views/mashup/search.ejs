@@ -1,0 +1,10 @@
+<h2>Pesquisar cidade ou país</h2>
+<form method="POST" action="/mashup/search">
+  <input type="text" name="term" placeholder="Ex: Porto" required><br>
+  <button type="submit">Pesquisar</button>
+</form>
+<a href="/mashup/history">Ver histórico</a> | <a href="/logout">Logout</a>
+
+<% if (typeof error !== 'undefined') { %>
+  <p style="color:red;"><%= error %></p>
+<% } %>

@@ -9,21 +9,17 @@ router.use((req, res, next) => {
     next();
 });
 
-// Página de pesquisa
 router.get('/', (req, res) => res.render('mashup/search'));
 
-// Processar pesquisa
 router.post('/search', async (req, res) => {
     try {
         const searchTerm = req.body.term;
         const userId = req.session.userId;
 
-        // Salvar histórico
         await User.findByIdAndUpdate(userId, {
             $push: { searches: { term: searchTerm } }
         });
 
-        // Chamar APIs em paralelo
         const [weather, country] = await Promise.all([
             axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${process.env.OWM_API_KEY}&units=metric&lang=pt`)
                 .then(res => ({
@@ -32,7 +28,7 @@ router.post('/search', async (req, res) => {
                     icon: res.data.weather[0].icon
                 }))
                 .catch(() => null),
-                
+
             axios.get(`https://restcountries.com/v3.1/name/${searchTerm}`)
                 .then(res => ({
                     name: res.data[0].name.common,
@@ -47,6 +43,11 @@ router.post('/search', async (req, res) => {
     } catch (err) {
         res.render('mashup/search', { error: 'Erro na pesquisa. Tente novamente.' });
     }
+});
+
+router.get('/history', async (req, res) => {
+    const user = await User.findById(req.session.userId);
+    res.render('mashup/history', { searches: user.searches });
 });
 
 module.exports = router;

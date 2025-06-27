@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Server",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/server.js",
+            "preLaunchTask": "npm: dev",
+            "outFiles": ["${workspaceFolder}/**/*.js"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/public",
+            "preLaunchTask": "npm: dev"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Debug",
+            "configurations": ["Launch Server", "Launch Chrome"]
+        }
+    ]
+}
