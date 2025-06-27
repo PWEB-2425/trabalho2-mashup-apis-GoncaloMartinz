@@ -1,0 +1,40 @@
+<%- include('../partials/header') %>
+        <h2 class="mb-4">Resultados para: <span class="text-primary"><%= term %></span></h2>
+        
+        <% if (!weather && !country) { %>
+            <div class="alert alert-danger">Nenhum resultado encontrado para "<%= term %>"</div>
+        <% } %>
+
+        <div class="row">
+            <% if (weather) { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-info text-white">
+                            <h5>🌦️ Clima Atual</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Temperatura:</strong> <%= weather.temp %>°C</p>
+                            <p><strong>Condição:</strong> <%= weather.description %></p>
+                            <img src="https://openweathermap.org/img/wn/<%= weather.icon %>@2x.png" alt="Ícone do clima">
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+            <% if (country) { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-success text-white">
+                            <h5>🏴 País</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Nome:</strong> <%= country.name %></p>
+                            <p><strong>Capital:</strong> <%= country.capital %></p>
+                            <p><strong>População:</strong> <%= country.population %></p>
+                            <img src="<%= country.flag %>" alt="Bandeira" class="img-thumbnail mt-2" style="max-width: 150px">
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+<%- include('../partials/footer') %>
