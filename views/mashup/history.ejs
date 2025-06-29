@@ -1,7 +1,0 @@
-<h2>Histórico de pesquisas</h2>
-<ul>
-  <% searches.forEach(search => { %>
-    <li><%= search.term %> - <%= new Date(search.date).toLocaleString() %></li>
-  <% }) %>
-</ul>
-<a href="/mashup">Voltar</a> | <a href="/logout">Logout</a>

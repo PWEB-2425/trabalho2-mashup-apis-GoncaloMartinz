@@ -1,31 +1,48 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Server",
-            "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/server.js",
-            "preLaunchTask": "npm: dev",
-            "outFiles": ["${workspaceFolder}/**/*.js"],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/public",
-            "preLaunchTask": "npm: dev"
-        }
-    ],
-    "compounds": [
-        {
-            "name": "Full Debug",
-            "configurations": ["Launch Server", "Launch Chrome"]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🚀 Launch Full Stack Dev",
+      "program": "${workspaceFolder}/server.js",
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "preLaunchTask": "npm: install", // Executa 'npm install' antes de iniciar
+      "postDebugTask": "killAllTerminals", // Limpa os terminais após debug
+      "serverReadyAction": {
+        "pattern": "Server running on (http://localhost:([0-9]+))",
+        "uriFormat": "%s", // Abre a URL raiz
+        "action": "debugWithChrome", // Usa o debugger do Chrome para frontend
+        "webRoot": "${workspaceFolder}/frontend"
+      },
+      "outputCapture": "std",
+      "internalConsoleOptions": "neverOpen", // Mantém o console limpo
+      "autoAttachChildProcesses": true, // Monitora processos filhos
+      "timeout": 30000, // Tempo aumentado para inicialização
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "express:*" // Habilita logs detalhados do Express
+      }
+    },
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "🌐 Attach to Frontend",
+      "port": 9222,
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend",
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🔧 Full Stack Debug",
+      "configurations": ["🚀 Launch Full Stack Dev", "🌐 Attach to Frontend"],
+      "stopAll": true // Para todos os processos quando parar o debug
+    }
+  ]
 }

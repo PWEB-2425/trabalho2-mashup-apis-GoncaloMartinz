@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Registo</title>
+</head>
+<body>
+    <h1>Registar</h1>
+    <form id="registerForm">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Registar</button>
+    </form>
+    <div id="registerMessage"></div>
+    <a href="index.html">Voltar</a>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const msg = await res.json();
+            document.getElementById('registerMessage').textContent = msg.message || msg.error;
+        });
+    </script>
+</body>
+</html>
